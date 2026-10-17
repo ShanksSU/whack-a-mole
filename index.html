@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fff7e7">
+<meta name="description" content="簡單好玩的打地鼠小遊戲！敲地鼠、避開小兔子，注意別誤傷。">
+<title>打地鼠｜小遊戲</title>
+<style>
+:root{font-family:ui-rounded,"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;color:#3c3027;background:#fff7e7;--brown:#3c3027;--orange:#f39042;--green:#467b52;--line:#eadfc9;--cream:#fffdf8}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;}body{background:radial-gradient(circle at 8% 12%,#ffedc7 0,transparent 29%),radial-gradient(circle at 91% 90%,#ddf2d5 0,transparent 32%),#fff7e7}button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}button:focus-visible{outline:3px solid #3f997a;outline-offset:4px}[hidden]{display:none!important}.app{width:min(100%,1080px);margin:0 auto;padding:26px 22px 32px}.header{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:19px}.brand{display:flex;gap:13px;align-items:center}.brand-icon{width:54px;height:54px;border-radius:17px;display:grid;place-items:center;background:#ffe0a7;box-shadow:0 5px 0 #f3c785;font-size:31px}.brand h1{margin:0;font-size:clamp(27px,4vw,38px);letter-spacing:.035em;line-height:1.15}.brand p{margin:5px 0 0;color:#867363;font-size:13px}.sound-btn{display:flex;align-items:center;justify-content:center;width:45px;height:45px;border:2px solid #ead8b9;background:#fffdf7;border-radius:14px;color:#624734;font-size:22px;box-shadow:0 4px 0 #ead8b9}.sound-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #ead8b9}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:17px}.metric{background:#fffefa;border:2px solid #f1e5d1;border-radius:19px;padding:14px 16px;box-shadow:0 5px 0 #eddec9}.metric .caption{font-size:12px;color:#8c7765;font-weight:700;letter-spacing:.035em}.metric .value{display:block;font-size:clamp(23px,3.1vw,35px);font-weight:900;line-height:1.35;font-variant-numeric:tabular-nums}.metric.score .value{color:#d96d26}.metric.time .value{color:#467b52}.metric.combo .value{color:#bc8540}
+.playfield{position:relative;overflow:hidden;border-radius:28px;border:4px solid #4c8659;background:linear-gradient(#dbf0cc 0,#d8eec5 34%,#a9d79e 100%);box-shadow:0 9px 0 #306746,0 15px 34px #547a4933;min-height:510px;isolation:isolate}.playfield::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 9% 10%,#f7fff3aa 0,transparent 23%),radial-gradient(ellipse at 85% 20%,#f7fff399 0,transparent 23%)}.hill{position:absolute;border-radius:50% 50% 0 0;bottom:-70px;width:60%;height:150px;background:#8ec68d;opacity:.38;pointer-events:none}.hill.left{left:-22%;transform:rotate(8deg)}.hill.right{right:-18%;background:#74b778;transform:rotate(-7deg)}.flower{position:absolute;z-index:0;pointer-events:none;font-size:23px;opacity:.8;filter:drop-shadow(0 3px #00000012)}.flower.a{top:16%;left:7%}.flower.b{top:38%;right:7%}.flower.c{bottom:10%;left:8%}.flower.d{top:8%;right:20%}.board-top{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:17px 24px 0}.board-title{color:#376c42;font-size:14px;font-weight:850}.board-state{color:#376c42;font-size:13px;font-weight:800;background:#ffffff9c;padding:6px 12px;border-radius:50px}.progress{height:8px;border-radius:30px;overflow:hidden;background:#ffffff8c;margin:13px 24px 0;position:relative;z-index:2}.progress>div{height:100%;width:100%;background:linear-gradient(90deg,#69aa72,#42845e);border-radius:30px;transition:width .1s linear}.holes{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:clamp(5px,2vw,18px);row-gap:5px;width:min(100%,745px);margin:10px auto 0;padding:15px 20px 33px;align-items:center}.hole{display:block;position:relative;aspect-ratio:1.2;min-width:0;border:0;background:transparent;padding:0;outline-offset:-4px;touch-action:manipulation}.hole:active{scale:.985}.hole-back{position:absolute;left:8%;right:8%;bottom:13%;height:48%;background:#493021;border:7px solid #765137;border-radius:50%;box-shadow:inset 0 10px 10px #1d120c9c,0 4px 0 #54884b66}.mole{position:absolute;left:50%;bottom:21%;width:74%;height:92%;z-index:3;transform:translate(-50%,53%) scale(.78);transform-origin:center bottom;opacity:0;pointer-events:none;transition:transform .19s cubic-bezier(.25,1.35,.4,1),opacity .12s;filter:drop-shadow(0 7px 4px #30251840)}.mole svg{display:block;width:100%;height:100%;overflow:visible}.hole.up .mole{transform:translate(-50%,4%) scale(1);opacity:1}.hole.hit .mole{transform:translate(-50%,38%) scale(.85);opacity:.25;transition:transform .12s,opacity .13s}.dirt{pointer-events:none;position:absolute;z-index:4;left:1%;right:1%;bottom:0;height:39%;background:linear-gradient(180deg,#b47b4e 0,#95643e 55%,#764d31 100%);border:3px solid #754c33;border-radius:58% 52% 46% 42% / 51% 53% 40% 40%;box-shadow:inset 0 7px 0 #d1a477,0 7px 0 #6e9f68;clip-path:polygon(0 28%,7% 13%,22% 4%,43% 0,66% 3%,85% 11%,97% 29%,100% 65%,92% 92%,15% 100%,0 69%)}.dirt::before{content:"";position:absolute;top:31%;left:18%;width:15%;height:6px;background:#e3b68b;border-radius:10px;box-shadow:55px 13px #e1ab80,88px -3px #c48c64}.hole.golden .dirt{box-shadow:inset 0 7px 0 #d1a477,0 0 0 4px #ffd774aa,0 7px 0 #6e9f68}.float-text{position:absolute;z-index:10;top:12%;left:50%;transform:translateX(-50%);color:#d96d26;font-size:clamp(16px,2.6vw,26px);font-weight:1000;text-shadow:0 2px #fff;pointer-events:none;animation:float-up .72s forwards}.float-text.gold{color:#c17b00}.float-text.penalty{color:#d84c58}.lives{display:inline-flex;align-items:center;gap:5px;font-weight:900;color:#b84b58}.legend{display:flex;justify-content:center;flex-wrap:wrap;gap:10px 20px;margin:2px auto 0;font-size:13px;color:#4e633b;font-weight:750;position:relative;z-index:3}.legend span{background:#ffffffa8;padding:5px 10px;border-radius:30px}@keyframes float-up{0%{opacity:0;translate:0 12px;scale:.8}30%{opacity:1;scale:1.12}100%{opacity:0;translate:0 -33px;scale:1}}.spark{position:absolute;z-index:9;pointer-events:none;left:20%;right:20%;top:7%;bottom:22%;background:conic-gradient(from 0deg,transparent 0 8%,#ffe374 9% 11%,transparent 12% 26%,#ffe374 27% 29%,transparent 30% 44%,#ffe374 45% 47%,transparent 48% 62%,#ffe374 63% 65%,transparent 66% 80%,#ffe374 81% 83%,transparent 84%);animation:spark .33s forwards}@keyframes spark{from{opacity:1;transform:scale(.3) rotate(0)}to{opacity:0;transform:scale(1.6) rotate(25deg)}}.bottom{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-top:23px;flex-wrap:wrap}.hint{font-size:13px;color:#806b59;line-height:1.7}.buttons{display:flex;gap:10px}.button{border:0;padding:12px 22px;min-height:45px;border-radius:13px;font-weight:900;transition:filter .15s,transform .1s;background:#f39042;color:white;box-shadow:0 5px 0 #bf6127}.button:hover{filter:brightness(1.04)}.button:active{transform:translateY(3px);box-shadow:0 2px 0 #bf6127}.button.secondary{color:#5d634e;background:#e6eddc;box-shadow:0 5px 0 #cad9be}.button.secondary:active{box-shadow:0 2px 0 #cad9be}.footer{text-align:center;font-size:12px;color:#a48b73;margin-top:22px}
+.overlay{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:#264d39aa;backdrop-filter:blur(5px);padding:16px}.dialog{width:min(100%,430px);background:#fffdf7;border:4px solid #fff1d6;border-radius:27px;box-shadow:0 16px 0 #254b3470,0 24px 55px #26321b55;text-align:center;padding:30px 28px 27px}.dialog-emoji{font-size:58px;line-height:1.3;display:block}.dialog h2{font-size:clamp(26px,5vw,36px);line-height:1.2;margin:10px 0;color:#493a2d}.dialog p{font-size:15px;color:#806c59;line-height:1.9;margin:9px 0 20px}.dialog .button{width:100%;margin-top:8px}.dialog-score{margin:10px auto 17px;padding:14px;border-radius:16px;background:#fff0d3;color:#c66b2a;font-size:35px;font-weight:1000}.dialog-score small{display:block;font-size:13px;color:#8e7151;margin-bottom:4px}.dialog .note{font-size:12px;color:#947963;margin-top:14px}
+@media(max-width:640px){.app{padding:17px 12px 28px}.header{margin-bottom:16px}.brand-icon{width:47px;height:47px;font-size:27px;border-radius:13px}.brand h1{font-size:27px}.brand p{font-size:11px}.metrics{gap:7px;margin-bottom:13px}.metric{padding:10px 7px;border-radius:14px;box-shadow:0 3px 0 #eddec9}.metric .caption{font-size:10px}.metric .value{font-size:clamp(20px,5vw,27px)}.playfield{min-height:380px;border-radius:20px}.board-top{padding:12px 13px 0}.board-title{font-size:12px}.board-state{font-size:11px}.legend{font-size:11px;gap:6px}.legend span{padding:4px 7px}.progress{margin:11px 13px 0}.holes{padding:12px 5px 20px;column-gap:2px;row-gap:3px}.hole{aspect-ratio:1.03}.mole{width:87%}.hole-back{border-width:5px}.dirt{border-width:2px}.bottom{gap:12px}.hint{font-size:12px}.buttons{width:100%}.buttons .button{flex:1}.dialog{padding:22px 17px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="brand"><div class="brand-icon" aria-hidden="true">🐹</div><div><h1>打地鼠</h1></div></div>
+    <button class="sound-btn" id="sound" type="button" aria-label="關閉音效" aria-pressed="true" title="切換音效">♫</button>
+  </header>
+  <div class="metrics" aria-label="遊戲資訊">
+    <div class="metric score"><div class="caption">本次分數</div><strong class="value" id="score">0</strong></div>
+    <div class="metric"><div class="caption">最高紀錄</div><strong class="value" id="best">0</strong></div>
+    <div class="metric time"><div class="caption">剩餘秒數</div><strong class="value" id="timer">45</strong></div>
+    <div class="metric combo"><div class="caption">連續命中</div><strong class="value" id="combo">0</strong></div>
+  </div>
+  <main>
+    <section class="playfield" aria-label="打地鼠遊戲場地">
+      <div class="hill left"></div><div class="hill right"></div><span class="flower a" aria-hidden="true">✿</span><span class="flower b" aria-hidden="true">✿</span><span class="flower c" aria-hidden="true">✿</span><span class="flower d" aria-hidden="true">✿</span>
+      <div class="board-top"><span class="board-title">🌱 地鼠小花園</span><span class="board-state" id="status">準備開始</span><span class="board-state lives" aria-live="polite">生命 <span id="lives">❤️❤️❤️</span></span></div>
+      <div class="progress" aria-label="剩餘時間進度"><div id="timebar"></div></div>
+      <div class="holes" id="holes" role="group" aria-label="九個地鼠洞"></div>
+      <div class="overlay" id="overlay">
+        <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+          <span class="dialog-emoji" id="dialog-emoji" aria-hidden="true">🐹</span>
+          <h2 id="dialog-title">準備好打地鼠了嗎？</h2>
+          <p id="dialog-desc">地鼠和兔子都有不同毛色，請仔細看耳朵！<br><strong>敲圓耳地鼠，避開長耳兔子。</strong><br>誤傷小兔子會扣 200 分、損失一顆愛心。</p>
+          <div class="dialog-score" id="dialog-score" hidden></div>
+          <button class="button" id="primary" type="button">開始遊戲</button>
+          <button class="button secondary" id="secondary" type="button" hidden>返回首頁</button>
+        </div>
+      </div>
+    </section>
+    <div class="bottom"><div class="buttons"><button class="button secondary" id="restart" type="button">重新開始</button><button class="button" id="pause" type="button">開始遊戲</button></div></div>
+  </main>
+</div>
+<script>
+'use strict';
+(()=>{
+  const $=id=>document.getElementById(id);
+  const DURATION=45000,KEY_BEST='whack_a_mole_best_v1',KEY_SOUND='whack_a_mole_sound_v1';
+  const ui={holes:$('holes'),score:$('score'),best:$('best'),timer:$('timer'),combo:$('combo'),lives:$('lives'),status:$('status'),bar:$('timebar'),overlay:$('overlay'),emoji:$('dialog-emoji'),title:$('dialog-title'),desc:$('dialog-desc'),result:$('dialog-score'),primary:$('primary'),secondary:$('secondary'),restart:$('restart'),pause:$('pause'),sound:$('sound')};
+  const slots=[];let state='ready',score=0,best=0,combo=0,maxCombo=0,hits=0,goldenHits=0,misses=0,friendlyHits=0,lives=3,timeLeft=DURATION,spawnIn=400,last=0,raf=0,soundOn=true,audio=null,newRecord=false;
+  try{best=Math.max(0,Number(localStorage.getItem(KEY_BEST))||0);soundOn=localStorage.getItem(KEY_SOUND)!=='off'}catch(_){}
+  const rand=(a,b)=>a+Math.random()*(b-a);
+  // 地鼠與兔子共用同一套毛色；安全與否只能依照耳朵輪廓辨識。
+  const COATS=[
+    {fur:'#a87553',dark:'#785039',light:'#c99570',inner:'#df9d96'}, // 棕色
+    {fur:'#f0e6d3',dark:'#9b897a',light:'#fff5e5',inner:'#e9a7b4'}, // 奶油白
+    {fur:'#767577',dark:'#4c4a51',light:'#afa8a7',inner:'#d9a0aa'}, // 灰色
+    {fur:'#393b45',dark:'#262833',light:'#797882',inner:'#b888a1'}, // 深灰
+    {fur:'#e7ba6c',dark:'#a6753b',light:'#ffdc9e',inner:'#eaa0a4'}, // 蜂蜜金
+    {fur:'#b76f58',dark:'#80483c',light:'#e0a58e',inner:'#e99e9c'}, // 紅棕
+    {fur:'#c8b9dd',dark:'#847491',light:'#ebdaf4',inner:'#edaac9'}, // 淡紫
+    {fur:'#d9d8d1',dark:'#8d918e',light:'#f2eee7',inner:'#d79ea9'}, // 銀白
+    {fur:'#cfa780',dark:'#88684e',light:'#f0d0ab',inner:'#dd9e96'}  // 淺褐
+  ];
+  const randomCoat=()=>COATS[Math.floor(Math.random()*COATS.length)];
+  function moleSvg(coat,gold=false,mark=false){
+    const {fur,dark,light,inner}=coat;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 165" aria-hidden="true">
+    <ellipse cx="80" cy="138" rx="56" ry="42" fill="${dark}"/>
+    <ellipse cx="36" cy="53" rx="19" ry="23" fill="${fur}" stroke="${dark}" stroke-width="4"/><ellipse cx="124" cy="53" rx="19" ry="23" fill="${fur}" stroke="${dark}" stroke-width="4"/>
+    <ellipse cx="36" cy="55" rx="10" ry="12" fill="${inner}"/><ellipse cx="124" cy="55" rx="10" ry="12" fill="${inner}"/>
+    <ellipse cx="80" cy="76" rx="57" ry="62" fill="${fur}" stroke="${dark}" stroke-width="4"/>
+    ${mark?`<path d="M61 26q19-9 38 0l-4 17q-14-8-30 0z" fill="${light}" opacity=".8"/>`:''}
+    <ellipse cx="80" cy="102" rx="38" ry="28" fill="${light}"/>
+    <ellipse cx="61" cy="69" rx="6.5" ry="8" fill="#392b26"/><ellipse cx="99" cy="69" rx="6.5" ry="8" fill="#392b26"/>
+    <circle cx="59" cy="66" r="2.2" fill="white"/><circle cx="97" cy="66" r="2.2" fill="white"/>
+    <ellipse cx="80" cy="91" rx="11" ry="8" fill="#e8857d"/><path d="M80 99v7m-11-1q11 12 22 0" stroke="#644536" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="45" cy="92" rx="10" ry="5" fill="${inner}" opacity=".65"/><ellipse cx="115" cy="92" rx="10" ry="5" fill="${inner}" opacity=".65"/>
+    <path d="M49 95l-22-5m22 13-24 4m86-12 22-5m-22 13 24 4" stroke="${dark}" stroke-width="2" stroke-linecap="round"/>
+    <ellipse cx="49" cy="142" rx="20" ry="13" fill="${light}" stroke="${dark}" stroke-width="3"/><ellipse cx="111" cy="142" rx="20" ry="13" fill="${light}" stroke="${dark}" stroke-width="3"/>
+    ${gold?'<g><path d="M72 11l8-15 8 15 17 3-12 11 3 17-16-8-16 8 3-17-12-11z" fill="#ffe36b" stroke="#b57c1b" stroke-width="3"/><circle cx="80" cy="20" r="4" fill="#fff9c8"/></g>':''}
+    </svg>`;
+  }
+  function rabbitSvg(coat,mark=false){
+    const {fur,dark,light,inner}=coat;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 165" aria-hidden="true">
+      <ellipse cx="54" cy="35" rx="17" ry="36" fill="${fur}" stroke="${dark}" stroke-width="4" transform="rotate(-10 54 35)"/>
+      <ellipse cx="106" cy="35" rx="17" ry="36" fill="${fur}" stroke="${dark}" stroke-width="4" transform="rotate(10 106 35)"/>
+      <ellipse cx="54" cy="33" rx="8" ry="24" fill="${inner}" transform="rotate(-10 54 33)"/>
+      <ellipse cx="106" cy="33" rx="8" ry="24" fill="${inner}" transform="rotate(10 106 33)"/>
+      <ellipse cx="80" cy="144" rx="52" ry="37" fill="${dark}" stroke="${dark}" stroke-width="4"/>
+      <ellipse cx="80" cy="89" rx="53" ry="60" fill="${fur}" stroke="${dark}" stroke-width="4"/>
+      ${mark?`<path d="M57 47q23-9 46 0l-5 13q-18-7-36 0z" fill="${light}" opacity=".8"/>`:''}
+      <ellipse cx="80" cy="110" rx="30" ry="20" fill="${light}" opacity=".9"/>
+      <ellipse cx="61" cy="83" rx="6.5" ry="8.5" fill="#324039"/><ellipse cx="99" cy="83" rx="6.5" ry="8.5" fill="#324039"/>
+      <circle cx="59" cy="80" r="2.2" fill="#fff"/><circle cx="97" cy="80" r="2.2" fill="#fff"/>
+      <ellipse cx="80" cy="103" rx="8" ry="6" fill="#ec90aa"/>
+      <path d="M80 110v6m0 0q-11 10-18 0m18 0q11 10 18 0" stroke="${dark}" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <ellipse cx="45" cy="108" rx="10" ry="6" fill="${inner}" opacity=".55"/><ellipse cx="115" cy="108" rx="10" ry="6" fill="${inner}" opacity=".55"/>
+      <ellipse cx="52" cy="148" rx="18" ry="10" fill="${light}" stroke="${dark}" stroke-width="3"/><ellipse cx="108" cy="148" rx="18" ry="10" fill="${light}" stroke="${dark}" stroke-width="3"/>
+    </svg>`;
+  }
+  for(let i=0;i<9;i++){
+    const el=document.createElement('button');el.type='button';el.className='hole';el.setAttribute('aria-label',`第 ${i+1} 個洞，沒有地鼠`);el.innerHTML=`<span class="hole-back"></span><span class="mole"></span><span class="dirt"></span>`;ui.holes.appendChild(el);
+    const slot={el,art:el.querySelector('.mole'),active:false,golden:false,friendly:false,age:0,ttl:0};el.addEventListener('click',()=>whack(slot));slots.push(slot);
+  }
+  function beep(freq,seconds=.08,end=freq){if(!soundOn)return;try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=audio||new AC();if(audio.state==='suspended')audio.resume();const t=audio.currentTime,osc=audio.createOscillator(),vol=audio.createGain();osc.type='sine';osc.frequency.setValueAtTime(freq,t);osc.frequency.exponentialRampToValueAtTime(Math.max(end,30),t+seconds);vol.gain.setValueAtTime(.001,t);vol.gain.exponentialRampToValueAtTime(.075,t+.01);vol.gain.exponentialRampToValueAtTime(.001,t+seconds);osc.connect(vol);vol.connect(audio.destination);osc.start(t);osc.stop(t+seconds+.02)}catch(_){}}
+  function update(){ui.score.textContent=score.toLocaleString('zh-TW');ui.best.textContent=best.toLocaleString('zh-TW');ui.timer.textContent=Math.ceil(Math.max(0,timeLeft)/1000);ui.combo.textContent=combo;ui.lives.textContent='❤️'.repeat(lives)+'🤍'.repeat(3-lives);ui.bar.style.width=(Math.max(0,timeLeft)/DURATION*100)+'%';ui.status.textContent=state==='ready'?'準備開始':state==='playing'?'遊戲進行中':state==='paused'?'已暫停':'時間到';ui.pause.textContent=state==='playing'?'暫停遊戲':state==='paused'?'繼續遊戲':state==='over'?'再玩一次':'開始遊戲';}
+  function clearSlots(){for(const s of slots){s.active=false;s.golden=false;s.friendly=false;s.age=0;s.el.classList.remove('up','hit','golden','friendly');s.el.setAttribute('aria-label',`第 ${slots.indexOf(s)+1} 個洞，沒有地鼠`);s.el.querySelectorAll('.float-text,.spark').forEach(x=>x.remove());}}
+  function dialog(mode){ui.overlay.hidden=false;ui.secondary.hidden=true;ui.result.hidden=true;ui.desc.hidden=mode==='paused';
+    if(mode==='ready'){ui.emoji.textContent='🐹';ui.title.textContent='準備好打地鼠了嗎？';ui.desc.innerHTML='地鼠和兔子都有不同毛色，請仔細看耳朵！<br><strong>敲圓耳地鼠，避開長耳兔子。</strong><br>誤傷小兔子會扣 200 分、損失一顆愛心。';ui.primary.textContent='開始遊戲';}
+    if(mode==='paused'){ui.emoji.textContent='⏸️';ui.title.textContent='遊戲已暫停';ui.desc.textContent='';ui.primary.textContent='繼續遊戲';ui.secondary.hidden=false;ui.secondary.textContent='返回首頁';}
+    if(mode==='over'){ui.emoji.textContent=newRecord?'🏆':'🎉';ui.title.textContent=lives===0?'愛心用完了！':'時間到！';ui.desc.textContent=`敲中 ${hits} 隻地鼠（金色 ${goldenHits} 隻），誤傷小兔子 ${friendlyHits} 次，最高連擊 ${maxCombo} 次。`;ui.result.hidden=false;ui.result.innerHTML=`<small>${newRecord?'新紀錄！':'本次得分'}</small>${score.toLocaleString('zh-TW')}`;ui.primary.textContent='再玩一次';ui.secondary.hidden=false;ui.secondary.textContent='返回首頁';}
+  }
+  function start(){cancelAnimationFrame(raf);state='playing';score=0;combo=0;maxCombo=0;hits=0;goldenHits=0;misses=0;friendlyHits=0;lives=3;newRecord=false;timeLeft=DURATION;spawnIn=200;last=0;clearSlots();ui.overlay.hidden=true;update();beep(510,.1,760);raf=requestAnimationFrame(tick);}
+  function pause(){if(state!=='playing')return;state='paused';cancelAnimationFrame(raf);raf=0;last=0;dialog('paused');update();}
+  function resume(){if(state!=='paused')return;state='playing';ui.overlay.hidden=true;last=0;update();raf=requestAnimationFrame(tick);}
+  function home(){cancelAnimationFrame(raf);raf=0;state='ready';score=0;combo=0;lives=3;timeLeft=DURATION;clearSlots();dialog('ready');update();}
+  function finish(){if(state!=='playing')return;state='over';cancelAnimationFrame(raf);raf=0;if(score>best){best=score;newRecord=true;try{localStorage.setItem(KEY_BEST,String(best))}catch(_){}}beep(620,.23,320);dialog('over');update();}
+  function pop(s,text,kind='normal'){const p=document.createElement('span');p.className='float-text'+(kind==='gold'?' gold':kind==='penalty'?' penalty':'');p.textContent=text;s.el.appendChild(p);setTimeout(()=>p.remove(),780);const flash=document.createElement('span');flash.className='spark';s.el.appendChild(flash);setTimeout(()=>flash.remove(),390);}
+  function remove(s,hit=false){if(!s.active)return;s.active=false;s.el.classList.remove('up','golden','friendly');s.el.setAttribute('aria-label',`第 ${slots.indexOf(s)+1} 個洞，沒有地鼠`);if(hit){s.el.classList.add('hit');setTimeout(()=>s.el.classList.remove('hit'),190);}else if(!s.friendly){misses++;combo=0;}}
+  function whack(s){if(state!=='playing'||!s.active)return;if(s.friendly){remove(s,true);friendlyHits++;lives=Math.max(0,lives-1);score=Math.max(0,score-200);combo=0;pop(s,'誤傷！-200','penalty');beep(260,.23,90);update();if(lives===0)finish();return;}const gold=s.golden;remove(s,true);hits++;if(gold)goldenHits++;combo++;maxCombo=Math.max(maxCombo,combo);const mult=1+Math.min(4,Math.floor((combo-1)/5));const points=(gold?300:100)*mult;score+=points;pop(s,'+'+points,gold?'gold':'normal');beep(gold?900:640,.1,gold?1350:930);if(score>best){best=score;newRecord=true;try{localStorage.setItem(KEY_BEST,String(best))}catch(_){}}update();}
+  function spawn(){const free=slots.filter(s=>!s.active);if(!free.length)return;const s=free[Math.floor(Math.random()*free.length)],progress=1-timeLeft/DURATION;s.active=true;s.friendly=Math.random()<.24;s.golden=!s.friendly&&Math.random()<.12;s.age=0;s.ttl=rand(1200,1660)-progress*440;const coat=randomCoat(),mark=Math.random()<.4;s.art.innerHTML=s.friendly?rabbitSvg(coat,mark):moleSvg(coat,s.golden,mark);s.el.classList.remove('hit');s.el.classList.toggle('golden',s.golden);s.el.classList.toggle('friendly',s.friendly);s.el.setAttribute('aria-label',`第 ${slots.indexOf(s)+1} 個洞，${s.friendly?'小兔子，不可敲擊':s.golden?'金色地鼠，點擊得分':'普通地鼠，點擊得分'}`);requestAnimationFrame(()=>{if(s.active&&state==='playing')s.el.classList.add('up');});}
+  function tick(now){if(state!=='playing')return;if(!last)last=now;const dt=Math.min(100,Math.max(0,now-last));last=now;timeLeft=Math.max(0,timeLeft-dt);if(timeLeft<=0){finish();return;}
+    for(const s of slots){if(s.active){s.age+=dt;if(s.age>=s.ttl)remove(s);}}
+    spawnIn-=dt;if(spawnIn<=0){const progress=1-timeLeft/DURATION;spawn();spawnIn=rand(610,950)-progress*330;}
+    update();raf=requestAnimationFrame(tick);
+  }
+  ui.primary.addEventListener('click',()=>state==='paused'?resume():start());ui.secondary.addEventListener('click',home);ui.restart.addEventListener('click',start);ui.pause.addEventListener('click',()=>state==='playing'?pause():state==='paused'?resume():start());
+  function setSound(){ui.sound.textContent=soundOn?'♫':'♪';ui.sound.setAttribute('aria-label',soundOn?'關閉音效':'開啟音效');ui.sound.setAttribute('aria-pressed',String(soundOn));}
+  ui.sound.addEventListener('click',()=>{soundOn=!soundOn;try{localStorage.setItem(KEY_SOUND,soundOn?'on':'off')}catch(_){}setSound();if(soundOn)beep(720,.07,980);});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&state==='playing')pause();});window.addEventListener('blur',()=>{if(state==='playing')pause();});
+  setSound();update();dialog('ready');
+})();
+</script>
+</body>
+</html>
